@@ -1,4 +1,4 @@
-package com.uniquext.android.library;
+package com.uniquext.android.bannerplayer;
 
 import android.support.v4.view.ViewPager;
 

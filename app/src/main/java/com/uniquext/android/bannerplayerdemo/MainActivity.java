@@ -1,9 +1,9 @@
-package com.uniquext.android.bannerplayer;
+package com.uniquext.android.bannerplayerdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.uniquext.android.library.BannerPlayer;
+import com.uniquext.android.bannerplayer.BannerPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

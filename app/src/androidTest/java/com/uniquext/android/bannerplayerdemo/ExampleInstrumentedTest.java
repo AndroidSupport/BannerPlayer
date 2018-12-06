@@ -1,4 +1,4 @@
-package com.uniquext.android.bannerplayer;
+package com.uniquext.android.bannerplayerdemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

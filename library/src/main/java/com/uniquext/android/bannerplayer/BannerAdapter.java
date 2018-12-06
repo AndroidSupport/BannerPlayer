@@ -1,4 +1,4 @@
-package com.uniquext.android.library;
+package com.uniquext.android.bannerplayer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

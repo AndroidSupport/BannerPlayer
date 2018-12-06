@@ -1,4 +1,4 @@
-package com.uniquext.android.library;
+package com.uniquext.android.bannerplayerdemo;
 
 import org.junit.Test;
 
