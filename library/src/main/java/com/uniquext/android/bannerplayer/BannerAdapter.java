@@ -45,6 +45,7 @@ public class BannerAdapter extends PagerAdapter {
 
     private List<? extends Object> mBannerList;
     private RequestBuilder<Drawable> requestBuilder;
+    private BannerPlayer.OnItemOnClickListener mOnItemOnClickListener;
 
     @SuppressLint("CheckResult")
     public BannerAdapter(Context context, List<? extends Object> imageList) {
@@ -66,10 +67,17 @@ public class BannerAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View view = View.inflate(container.getContext(), R.layout.item_image_pager, null);
+        view.setTag(position);
         container.addView(view);
         requestBuilder.load(mBannerList.get(position)).into((ImageView) view.findViewById(R.id.iv_image));
+        view.setOnClickListener(v -> {
+            if (mOnItemOnClickListener != null) {
+                int index = (int) v.getTag();
+                mOnItemOnClickListener.onItemClick(v, index, mBannerList.get(index));
+            }
+        });
         return view;
     }
 
@@ -78,4 +86,7 @@ public class BannerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
+    public void setOnItemOnClickListener(BannerPlayer.OnItemOnClickListener onItemOnClickListener) {
+        this.mOnItemOnClickListener = onItemOnClickListener;
+    }
 }

@@ -2,7 +2,6 @@ package com.uniquext.android.bannerplayer;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -13,6 +12,8 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.uniquext.android.bannerplayer.BannerHandler.MSG;
 
 /**
  * 　 　　   へ　　　 　／|
@@ -36,25 +37,13 @@ import java.util.List;
  */
 public class BannerPlayer extends FrameLayout {
 
-    private static final int MSG = 1;
-    private static final int DELAY = 1000;
+    private boolean mCancel = false;
 
     private ViewPager mViewPager;
-    private boolean mCancel = false;
+    private BannerAdapter mAdapter;
     private List<Object> mBannerList = new ArrayList<>();
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            synchronized (BannerPlayer.this) {
-                if (mCancel) {
-                    return;
-                }
-                next();
-                sendMessageDelayed(obtainMessage(MSG), DELAY);
-            }
-        }
-    };
+    private BannerPageChangeListener mPageChangeListener;
+    private Handler mHandler = new BannerHandler(this);
 
     public BannerPlayer(@NonNull Context context) {
         this(context, null);
@@ -67,10 +56,16 @@ public class BannerPlayer extends FrameLayout {
     public BannerPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         View root = LayoutInflater.from(getContext()).inflate(R.layout.banner, this, true);
+        this.setBackgroundResource(R.drawable.img_default_banner);
         mViewPager = root.findViewById(R.id.vp_banner);
-        if (mBannerList.size() == 0) {
-            setBackgroundResource(R.drawable.img_default_banner);
-        }
+        mAdapter = new BannerAdapter(getContext(), mBannerList);
+        mPageChangeListener = new BannerPageChangeListener(mViewPager, 0);
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.addOnPageChangeListener(mPageChangeListener);
+    }
+
+    public boolean isCancel() {
+        return mCancel;
     }
 
     public void setData(@NonNull List<? extends Object> data) {
@@ -78,11 +73,12 @@ public class BannerPlayer extends FrameLayout {
             return;
         }
         setBackground(null);
+        mBannerList.clear();
         for (int i = 0; i < 3; ++i) {
             mBannerList.addAll(data);
         }
-        mViewPager.setAdapter(new BannerAdapter(getContext(), mBannerList));
-        mViewPager.addOnPageChangeListener(new BannerPageChangeListener(mViewPager, data.size()));
+        mAdapter.notifyDataSetChanged();
+        mPageChangeListener.setCardinalNumber(data.size());
     }
 
     public void start() {
@@ -93,7 +89,7 @@ public class BannerPlayer extends FrameLayout {
         mHandler.sendMessage(mHandler.obtainMessage(MSG));
     }
 
-    private void next() {
+    void next() {
         int position = mViewPager.getCurrentItem();
         mViewPager.setCurrentItem(position + 1, false);
     }
@@ -102,5 +98,20 @@ public class BannerPlayer extends FrameLayout {
         mCancel = true;
         mHandler.removeMessages(MSG);
     }
+
+    public void setOnItemOnClickListener(BannerPlayer.OnItemOnClickListener onItemOnClickListener) {
+        mAdapter.setOnItemOnClickListener(onItemOnClickListener);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        cancel();
+        super.onDetachedFromWindow();
+    }
+
+    public interface OnItemOnClickListener {
+        void onItemClick(View view, int position, Object object);
+    }
+
 
 }

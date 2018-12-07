@@ -35,6 +35,14 @@ public class BannerPageChangeListener implements ViewPager.OnPageChangeListener 
         mCardinalNumber = cardinalNumber;
     }
 
+    public int getCardinalNumber() {
+        return mCardinalNumber;
+    }
+
+    public void setCardinalNumber(int cardinalNumber) {
+        this.mCardinalNumber = cardinalNumber;
+    }
+
     @Override
     public void onPageScrolled(int i, float v, int i1) {
         if (i < mCardinalNumber) {

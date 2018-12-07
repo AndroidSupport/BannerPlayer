@@ -2,6 +2,8 @@ package com.uniquext.android.bannerplayerdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.uniquext.android.bannerplayer.BannerPlayer;
 
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         bannerPlayer = findViewById(R.id.banner);
 
-        List<String> data = new ArrayList<>();
+        final List<String> data = new ArrayList<>();
         data.add("http://res.xyztree.com/category_1_1.png");
         data.add("http://res.xyztree.com/category_4_1.png");
         data.add("http://res.xyztree.com/category_5_1.png");
@@ -28,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         bannerPlayer.setData(data);
-        bannerPlayer.start();
+        bannerPlayer.setOnItemOnClickListener(new BannerPlayer.OnItemOnClickListener() {
+            @Override
+            public void onItemClick(View view, int position, Object o) {
+                Toast.makeText(MainActivity.this, (String)o, Toast.LENGTH_SHORT).show();
+            }
+        });
+//        bannerPlayer.start();
     }
 }
