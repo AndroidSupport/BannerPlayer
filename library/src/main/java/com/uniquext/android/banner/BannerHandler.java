@@ -28,12 +28,20 @@ import java.lang.ref.WeakReference;
 public class BannerHandler extends Handler {
 
     static final int MSG = 1;
-    private static final int DELAY = 1000;
-
+    private static final long DELAY = 1000L;
+    private long delay = DELAY;
     private WeakReference<BannerPlayer> bannerPlayerWeakReference;
 
     BannerHandler(BannerPlayer bannerPlayer) {
         this.bannerPlayerWeakReference = new WeakReference<>(bannerPlayer);
+    }
+
+    public long getDelay() {
+        return delay;
+    }
+
+    public void setDelay(long delay) {
+        this.delay = delay;
     }
 
     @Override
@@ -44,7 +52,7 @@ public class BannerHandler extends Handler {
                 return;
             }
             bannerPlayerWeakReference.get().next();
-            sendMessageDelayed(obtainMessage(MSG), DELAY);
+            sendMessageDelayed(obtainMessage(MSG), delay);
         }
     }
 

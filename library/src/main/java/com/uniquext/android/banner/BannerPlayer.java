@@ -43,7 +43,7 @@ public class BannerPlayer extends FrameLayout {
     private BannerAdapter mAdapter;
     private List<Object> mBannerList = new ArrayList<>();
     private BannerPageChangeListener mPageChangeListener;
-    private Handler mHandler = new BannerHandler(this);
+    private BannerHandler mHandler = new BannerHandler(this);
 
     public BannerPlayer(@NonNull Context context) {
         this(context, null);
@@ -62,10 +62,6 @@ public class BannerPlayer extends FrameLayout {
         mPageChangeListener = new BannerPageChangeListener(mViewPager, 0);
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(mPageChangeListener);
-    }
-
-    public boolean isCancel() {
-        return mCancel;
     }
 
     public void setData(@NonNull List<? extends Object> data) {
@@ -97,6 +93,18 @@ public class BannerPlayer extends FrameLayout {
     public void cancel() {
         mCancel = true;
         mHandler.removeMessages(MSG);
+    }
+
+    public boolean isCancel() {
+        return mCancel;
+    }
+
+    public long getDelay() {
+        return mHandler.getDelay();
+    }
+
+    public void setDelay(long delay) {
+        mHandler.setDelay(delay);
     }
 
     public void setOnItemOnClickListener(BannerPlayer.OnItemOnClickListener onItemOnClickListener) {

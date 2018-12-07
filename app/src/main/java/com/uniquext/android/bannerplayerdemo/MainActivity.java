@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, (String)o, Toast.LENGTH_SHORT).show();
             }
         });
-//        bannerPlayer.start();
+        bannerPlayer.setDelay(2000L);
+        bannerPlayer.start();
     }
 }
