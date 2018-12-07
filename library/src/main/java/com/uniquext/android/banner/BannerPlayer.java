@@ -1,4 +1,4 @@
-package com.uniquext.android.bannerplayer;
+package com.uniquext.android.banner;
 
 import android.content.Context;
 import android.os.Handler;
@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.uniquext.android.bannerplayer.BannerHandler.MSG;
+import static com.uniquext.android.banner.BannerHandler.MSG;
 
 /**
  * 　 　　   へ　　　 　／|

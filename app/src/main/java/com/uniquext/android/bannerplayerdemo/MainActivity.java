@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.uniquext.android.bannerplayer.BannerPlayer;
+import com.uniquext.android.banner.BannerPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

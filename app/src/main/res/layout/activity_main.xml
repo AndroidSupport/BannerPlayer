@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.uniquext.android.bannerplayer.BannerPlayer
+    <com.uniquext.android.banner.BannerPlayer
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -1,4 +1,4 @@
-package com.uniquext.android.bannerplayer;
+package com.uniquext.android.banner;
 
 import android.os.Handler;
 import android.os.Message;
