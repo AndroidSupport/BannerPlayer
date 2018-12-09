@@ -22,33 +22,22 @@ import android.support.v4.view.ViewPager;
  * @version 1.0
  * @date 2018/12/6  21:13
  */
-public class BannerPageChangeListener implements ViewPager.OnPageChangeListener {
+class BannerPageChangeListener implements ViewPager.OnPageChangeListener {
 
-    /**
-     * 基数
-     */
-    private int mCardinalNumber;
     private ViewPager mViewPager;
+    private BannerAdapter mBannerAdapter;
 
-    public BannerPageChangeListener(ViewPager viewPager, int cardinalNumber) {
+    BannerPageChangeListener(ViewPager viewPager, BannerAdapter bannerAdapter) {
         mViewPager = viewPager;
-        mCardinalNumber = cardinalNumber;
-    }
-
-    public int getCardinalNumber() {
-        return mCardinalNumber;
-    }
-
-    public void setCardinalNumber(int cardinalNumber) {
-        this.mCardinalNumber = cardinalNumber;
+        mBannerAdapter = bannerAdapter;
     }
 
     @Override
     public void onPageScrolled(int i, float v, int i1) {
-        if (i < mCardinalNumber) {
-            mViewPager.setCurrentItem(i + mCardinalNumber, false);
-        } else if (i > mCardinalNumber * 2) {
-            mViewPager.setCurrentItem(i - mCardinalNumber, false);
+        if (i < mBannerAdapter.getCount()) {
+            mViewPager.setCurrentItem(i + mBannerAdapter.getCount(), false);
+        } else if (i > mBannerAdapter.getCount() * 2) {
+            mViewPager.setCurrentItem(i - mBannerAdapter.getCount(), false);
         }
     }
 

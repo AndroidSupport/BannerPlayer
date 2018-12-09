@@ -1,18 +1,6 @@
 package com.uniquext.android.banner;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -34,59 +22,45 @@ import java.util.List;
  *
  * @author UniqueXT
  * @version 1.0
- * @date 2018/12/6  21:05
+ * @date 2018/12/9  15:04
  */
-public class BannerAdapter extends PagerAdapter {
+public abstract class BannerAdapter<T> {
 
-    @DrawableRes
-    private int mErrorResource = R.drawable.img_default_banner;
-    @DrawableRes
-    private int mPreviewResource = R.drawable.img_default_banner;
+    private List<T> mBannerList;
+    private BannerPagerAdapter bannerPagerAdapter;
 
-    private List<? extends Object> mBannerList;
-    private RequestBuilder<Drawable> requestBuilder;
-    private BannerPlayer.OnItemOnClickListener mOnItemOnClickListener;
-
-    @SuppressLint("CheckResult")
-    public BannerAdapter(Context context, List<? extends Object> imageList) {
-        mBannerList = imageList;
-        RequestOptions options = new RequestOptions();
-        options.placeholder(mPreviewResource).error(mErrorResource);
-        requestBuilder = Glide.with(context).asDrawable().apply(options);
+    public BannerAdapter(List<T> banners) {
+        this.mBannerList = banners;
     }
 
-    @Override
-    public int getCount() {
-        return mBannerList.size();
+    public List<T> getBannerList() {
+        return mBannerList;
     }
 
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-        return view == o;
+    public abstract int getCount();
+
+    public abstract void instantiateItem(ImageView view, int position, T item);
+
+    public void notifyDataSetChanged() {
+        bannerPagerAdapter.notifyDataSetChanged();
     }
 
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        View view = View.inflate(container.getContext(), R.layout.item_image_pager, null);
-        view.setTag(position);
-        container.addView(view);
-        requestBuilder.load(mBannerList.get(position)).into((ImageView) view.findViewById(R.id.iv_image));
-        view.setOnClickListener(v -> {
-            if (mOnItemOnClickListener != null) {
-                int index = (int) v.getTag();
-                mOnItemOnClickListener.onItemClick(v, index, mBannerList.get(index));
-            }
-        });
-        return view;
+    void setBannerPagerAdapter(BannerPagerAdapter bannerPagerAdapter) {
+        this.bannerPagerAdapter = bannerPagerAdapter;
     }
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View) object);
-    }
-
-    public void setOnItemOnClickListener(BannerPlayer.OnItemOnClickListener onItemOnClickListener) {
-        this.mOnItemOnClickListener = onItemOnClickListener;
-    }
+//    void setViewPagerObserver(DataSetObserver observer) {
+//        synchronized(this) {
+//            this.mViewPagerObserver = observer;
+//        }
+//    }
+//    public void notifyDataSetChanged() {
+//        synchronized(this) {
+//            if(this.mViewPagerObserver != null) {
+//                this.mViewPagerObserver.onChanged();
+//            }
+//        }
+//
+//        this.mObservable.notifyChanged();
+//    }
 }
