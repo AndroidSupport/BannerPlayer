@@ -50,8 +50,8 @@ public class BannerPlayer extends FrameLayout {
 
     public BannerPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        View root = LayoutInflater.from(getContext()).inflate(R.layout.banner, this, true);
-        mViewPager = root.findViewById(R.id.vp_banner);
+        mViewPager = new ViewPager(context);
+        this.addView(mViewPager);
     }
 
     public void setEmptyBackground(@DrawableRes int drawable) {
@@ -65,7 +65,6 @@ public class BannerPlayer extends FrameLayout {
 
     void next() {
         int position = mViewPager.getCurrentItem();
-        Log.e("#####", String.valueOf(position));
         mViewPager.setCurrentItem(position + 1, false);
     }
 

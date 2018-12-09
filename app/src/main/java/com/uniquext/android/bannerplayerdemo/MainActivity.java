@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
         bannerPlayer.setEmptyBackground(R.drawable.img_default_banner);
 
         final List<String> data = new ArrayList<>();
-//        data.add("http://res.xyztree.com/category_1_1.png");
-//        data.add("http://res.xyztree.com/category_4_1.png");
-//        data.add("http://res.xyztree.com/category_5_1.png");
-//        data.add("http://res.xyztree.com/category_4_3.png");
-//        data.add("http://res.xyztree.com/category_2_1.png");
+        data.add("http://res.xyztree.com/category_1_1.png");
+        data.add("http://res.xyztree.com/category_4_1.png");
+        data.add("http://res.xyztree.com/category_5_1.png");
+        data.add("http://res.xyztree.com/category_4_3.png");
+        data.add("http://res.xyztree.com/category_2_1.png");
 
 
         BannerAdapter<String> bannerAdapter = new BannerAdapter<String>(data) {
