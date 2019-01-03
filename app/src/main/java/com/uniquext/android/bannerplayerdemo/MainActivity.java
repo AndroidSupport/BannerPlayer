@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.uniquext.android.banner.BannerPlayer;
 import com.uniquext.android.banner.BannerAdapter;
+import com.uniquext.android.banner.BannerPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

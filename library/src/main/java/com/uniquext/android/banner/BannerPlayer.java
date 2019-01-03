@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import static com.uniquext.android.banner.BannerHandler.MSG;
@@ -32,7 +33,7 @@ import static com.uniquext.android.banner.BannerHandler.MSG;
  */
 public class BannerPlayer extends FrameLayout {
 
-    private boolean mCancel = false;
+    private boolean mCancel = true;
     private ViewPager mViewPager;
 
     private BannerHandler mHandler = new BannerHandler(this);
@@ -47,7 +48,7 @@ public class BannerPlayer extends FrameLayout {
 
     public BannerPlayer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mViewPager = new ViewPager(context);
+        this.mViewPager = new ViewPager(context);
         this.addView(mViewPager);
     }
 
@@ -56,8 +57,10 @@ public class BannerPlayer extends FrameLayout {
     }
 
     public void start() {
-        mCancel = false;
-        mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        if (mCancel) {
+            mCancel = false;
+            mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        }
     }
 
     void next() {
@@ -66,8 +69,10 @@ public class BannerPlayer extends FrameLayout {
     }
 
     public void cancel() {
-        mCancel = true;
-        mHandler.removeMessages(MSG);
+        if (!mCancel) {
+            mCancel = true;
+            mHandler.removeMessages(MSG);
+        }
     }
 
     public boolean isCancel() {
@@ -85,7 +90,6 @@ public class BannerPlayer extends FrameLayout {
     public void setBannerAdapter(BannerAdapter bannerAdapter) {
         mViewPager.setAdapter(new BannerPagerAdapter(bannerAdapter));
         mViewPager.addOnPageChangeListener(new BannerPageChangeListener(mViewPager, bannerAdapter));
-
     }
 
     public void notifyDataSetChanged() {
@@ -100,4 +104,16 @@ public class BannerPlayer extends FrameLayout {
         super.onDetachedFromWindow();
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                start();
+                break;
+            default:
+                cancel();
+                break;
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }
