@@ -9,8 +9,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-import static com.uniquext.android.banner.BannerHandler.MSG;
-
 /**
  * 　 　　   へ　　　 　／|
  * 　　    /＼7　　　 ∠＿/
@@ -33,7 +31,6 @@ import static com.uniquext.android.banner.BannerHandler.MSG;
  */
 public class BannerPlayer extends FrameLayout {
 
-    private boolean mCancel = true;
     private ViewPager mViewPager;
 
     private BannerHandler mHandler = new BannerHandler(this);
@@ -57,9 +54,8 @@ public class BannerPlayer extends FrameLayout {
     }
 
     public void start() {
-        if (mCancel) {
-            mCancel = false;
-            mHandler.sendMessage(mHandler.obtainMessage(MSG));
+        if (mHandler.isCancel()) {
+            mHandler.start();
         }
     }
 
@@ -69,14 +65,13 @@ public class BannerPlayer extends FrameLayout {
     }
 
     public void cancel() {
-        if (!mCancel) {
-            mCancel = true;
-            mHandler.removeMessages(MSG);
+        if (!mHandler.isCancel()) {
+            mHandler.cancel();
         }
     }
 
     public boolean isCancel() {
-        return mCancel;
+        return mHandler.isCancel();
     }
 
     public long getDelay() {
@@ -108,10 +103,10 @@ public class BannerPlayer extends FrameLayout {
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                start();
+                mHandler.resume();
                 break;
             default:
-                cancel();
+                mHandler.pause();
                 break;
         }
         return super.dispatchTouchEvent(event);

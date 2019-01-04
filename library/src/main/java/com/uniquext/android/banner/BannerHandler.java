@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import java.lang.ref.WeakReference;
+import java.util.Deque;
+import java.util.LinkedList;
 
 /**
  * 　 　　   へ　　　 　／|
@@ -27,13 +29,29 @@ import java.lang.ref.WeakReference;
  */
 class BannerHandler extends Handler {
 
-    static final int MSG = 1;
+    private static final int MSG = 1;
     private static final long DELAY = 1000L;
+    private volatile boolean mCancel = true;
     private long delay = DELAY;
     private WeakReference<BannerPlayer> bannerPlayerWeakReference;
+    private Deque<Message> messageQueue = new LinkedList<>();
 
     BannerHandler(BannerPlayer bannerPlayer) {
         this.bannerPlayerWeakReference = new WeakReference<>(bannerPlayer);
+    }
+
+    boolean isCancel() {
+        return mCancel;
+    }
+
+    void start() {
+        mCancel = false;
+        sendMessageDelayed(obtainMessage(MSG), delay);
+    }
+
+    void cancel() {
+        pause();
+        removeMessages(MSG);
     }
 
     long getDelay() {
@@ -47,13 +65,29 @@ class BannerHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        synchronized (bannerPlayerWeakReference.get()) {
-            if (bannerPlayerWeakReference.get().isCancel()) {
+        synchronized (this) {
+            if (mCancel) {
+                Message msgCopy = new Message();
+                msgCopy.copyFrom(msg);
+                messageQueue.add(msgCopy);
                 return;
             }
             bannerPlayerWeakReference.get().next();
             sendMessageDelayed(obtainMessage(MSG), delay);
         }
     }
+
+    void resume() {
+        mCancel = false;
+        while (messageQueue.peek() != null) {
+            Message message = messageQueue.pop();
+            sendMessageDelayed(message, delay);
+        }
+    }
+
+    void pause() {
+        mCancel = true;
+    }
+
 
 }

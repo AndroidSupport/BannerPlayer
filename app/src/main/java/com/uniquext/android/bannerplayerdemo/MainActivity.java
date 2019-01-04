@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         bannerPlayer.setBannerAdapter(bannerAdapter);
-        bannerPlayer.setDelay(2000L);
+        bannerPlayer.setDelay(3000L);
         bannerPlayer.start();
 
 //        data.remove("http://res.xyztree.com/category_2_1.png");
