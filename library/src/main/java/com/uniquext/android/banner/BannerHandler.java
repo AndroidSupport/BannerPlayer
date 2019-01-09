@@ -66,23 +66,20 @@ class BannerHandler extends Handler {
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
         synchronized (this) {
-            if (mCancel) {
-                Message msgCopy = new Message();
-                msgCopy.copyFrom(msg);
-                messageQueue.add(msgCopy);
-                return;
+            if (!mCancel) {
+                bannerPlayerWeakReference.get().next();
+                sendMessageDelayed(obtainMessage(MSG), delay);
             }
-            bannerPlayerWeakReference.get().next();
-            sendMessageDelayed(obtainMessage(MSG), delay);
         }
     }
 
     void resume() {
         mCancel = false;
-        while (messageQueue.peek() != null) {
-            Message message = messageQueue.pop();
-            sendMessageDelayed(message, delay);
-        }
+        sendMessageDelayed(obtainMessage(MSG), delay);
+//        while (messageQueue.peek() != null) {
+//            Message message = messageQueue.pop();
+//            sendMessageDelayed(message, delay);
+//        }
     }
 
     void pause() {

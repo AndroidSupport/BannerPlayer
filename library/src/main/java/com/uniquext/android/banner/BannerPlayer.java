@@ -61,7 +61,7 @@ public class BannerPlayer extends FrameLayout {
 
     void next() {
         int position = mViewPager.getCurrentItem();
-        mViewPager.setCurrentItem(position + 1, false);
+        mViewPager.setCurrentItem(position + 1, true);
     }
 
     public void cancel() {
@@ -106,7 +106,7 @@ public class BannerPlayer extends FrameLayout {
                 mHandler.resume();
                 break;
             default:
-                mHandler.pause();
+                mHandler.cancel();
                 break;
         }
         return super.dispatchTouchEvent(event);

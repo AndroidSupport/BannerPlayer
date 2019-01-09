@@ -34,16 +34,16 @@ class BannerPageChangeListener implements ViewPager.OnPageChangeListener {
 
     @Override
     public void onPageScrolled(int i, float v, int i1) {
-        if (i < mBannerAdapter.getCount()) {
-            mViewPager.setCurrentItem(i + mBannerAdapter.getCount(), false);
-        } else if (i > mBannerAdapter.getCount() * 2) {
-            mViewPager.setCurrentItem(i - mBannerAdapter.getCount(), false);
-        }
+
     }
 
     @Override
     public void onPageSelected(int i) {
-
+        if (mViewPager.getCurrentItem() < mBannerAdapter.getCount()) {
+            mViewPager.setCurrentItem(i + mBannerAdapter.getCount(), false);
+        } else if (mViewPager.getCurrentItem() > mBannerAdapter.getCount() * 2) {
+            mViewPager.setCurrentItem(i - mBannerAdapter.getCount(), false);
+        }
     }
 
     @Override
