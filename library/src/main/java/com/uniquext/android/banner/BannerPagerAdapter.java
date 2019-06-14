@@ -1,11 +1,12 @@
 package com.uniquext.android.banner;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * 　 　　   へ　　　 　／|
@@ -49,12 +50,15 @@ class BannerPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        ImageView imageView = new AppCompatImageView(container.getContext());
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        container.addView(imageView);
+        View item = bannerAdapter.createItemBanner();
+        if (item == null) {
+            item = new AppCompatImageView(container.getContext());
+            ((AppCompatImageView) item).setScaleType(ImageView.ScaleType.FIT_XY);
+        }
+        container.addView(item);
         int index = position % bannerAdapter.getCount();
-        bannerAdapter.instantiateItem(imageView, index, bannerAdapter.getBannerList().get(index));
-        return imageView;
+        bannerAdapter.instantiateItem(item, index, bannerAdapter.getBannerList().get(index));
+        return item;
     }
 
     @Override

@@ -66,7 +66,7 @@ class BannerHandler extends Handler {
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
         synchronized (this) {
-            if (!mCancel) {
+            if (!mCancel && bannerPlayerWeakReference.get() != null) {
                 bannerPlayerWeakReference.get().next();
                 sendMessageDelayed(obtainMessage(MSG), delay);
             }

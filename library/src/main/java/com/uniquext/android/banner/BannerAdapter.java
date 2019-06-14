@@ -1,5 +1,6 @@
 package com.uniquext.android.banner;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -39,7 +40,11 @@ public abstract class BannerAdapter<T> {
 
     public abstract int getCount();
 
-    public abstract void instantiateItem(ImageView view, int position, T item);
+    public abstract void instantiateItem(View view, int position, T item);
+
+    public View createItemBanner(){
+        return null;
+    }
 
     public void notifyDataSetChanged() {
         bannerPagerAdapter.notifyDataSetChanged();

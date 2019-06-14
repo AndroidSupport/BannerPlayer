@@ -1,7 +1,9 @@
 package com.uniquext.android.bannerplayerdemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void instantiateItem(ImageView view, int position, final String item) {
+            public void instantiateItem(View view, int position, final String item) {
                 Glide.with(MainActivity.this)
                         .asDrawable()
                         .apply(new RequestOptions()
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                                 .error(R.drawable.img_default_banner)
                         )
                         .load(item)
-                        .into(view);
+                        .into((ImageView) view);
                 view.setOnClickListener(v -> {
                     Toast.makeText(MainActivity.this, item, Toast.LENGTH_SHORT).show();
                 });
